@@ -1,0 +1,6308 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>目标院校招生活动日历看板</title>
+    <style>
+:root {
+  --tencent-blue: #006eff;
+  --deep-blue: #093b7a;
+  --ink: #142033;
+  --muted: #66758c;
+  --line: #dbe7f5;
+  --page: #f4f8fd;
+  --panel: #ffffff;
+  --high: #d92d20;
+  --medium: #f79009;
+  --low: #12b76a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--page);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+}
+
+.topbar {
+  min-height: 96px;
+  padding: 20px 32px;
+  color: white;
+  background:
+    linear-gradient(90deg, rgba(0, 110, 255, 0.96), rgba(0, 82, 204, 0.9)),
+    #006eff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.eyebrow,
+.panel-heading p,
+.timeline-header p,
+.source-block p {
+  margin: 0 0 6px;
+  color: inherit;
+  opacity: 0.78;
+  font-size: 13px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.app-shell {
+  width: min(1440px, calc(100vw - 40px));
+  margin: 24px auto 40px;
+}
+
+.scope-note {
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  border: 1px solid #b9ddff;
+  border-left: 4px solid var(--tencent-blue);
+  border-radius: 8px;
+  color: #174b7c;
+  background: #eef7ff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.control-band {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.4fr) repeat(3, minmax(160px, 1fr));
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px rgba(9, 59, 122, 0.08);
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+select,
+input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #c9d8ea;
+  border-radius: 6px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+
+select:focus,
+input:focus {
+  outline: 2px solid rgba(0, 110, 255, 0.18);
+  border-color: var(--tencent-blue);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.profile-panel,
+.main-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.profile-panel {
+  padding: 22px;
+  align-self: start;
+}
+
+.panel-heading strong {
+  display: block;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.profile-location {
+  display: block;
+  margin-top: 8px;
+  color: var(--tencent-blue);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.profile-copy {
+  margin: 18px 0;
+  color: #43536a;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.meta-list {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.meta-list div {
+  padding: 12px;
+  border-radius: 6px;
+  background: #f7fbff;
+  border: 1px solid #e2edf9;
+}
+
+dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+dd {
+  margin: 5px 0 0;
+  font-weight: 700;
+}
+
+.source-block {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.source-block a {
+  display: block;
+  margin-top: 8px;
+  color: var(--tencent-blue);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.main-panel {
+  padding: 18px;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.9fr) minmax(120px, 0.7fr) minmax(120px, 0.7fr) minmax(340px, 1.8fr);
+  gap: 12px;
+}
+
+.summary-card {
+  min-height: 88px;
+  padding: 14px;
+  border: 1px solid #dfeafa;
+  border-radius: 8px;
+  background: #fbfdff;
+}
+
+.summary-card.primary {
+  color: white;
+  background: var(--deep-blue);
+  border-color: var(--deep-blue);
+}
+
+.summary-card span {
+  display: block;
+  color: inherit;
+  opacity: 0.72;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+#summaryWindow {
+  max-height: 132px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+#summaryWindow span {
+  display: inline-block;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: #075985;
+  background: #eaf6ff;
+  border: 1px solid #c6e3ff;
+  font-weight: 800;
+}
+
+.insight-box {
+  margin: 14px 0 18px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--tencent-blue);
+  background: #f5faff;
+  color: #31506f;
+  line-height: 1.65;
+  border-radius: 0 8px 8px 0;
+}
+
+.timeline-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 2px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.timeline-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.high {
+  background: var(--high);
+}
+
+.medium {
+  background: var(--medium);
+}
+
+.low {
+  background: var(--low);
+}
+
+.timeline {
+  padding-top: 10px;
+}
+
+.month-group {
+  margin-top: 18px;
+}
+
+.month-label {
+  margin: 0 0 10px;
+  color: var(--deep-blue);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.event-row {
+  display: grid;
+  grid-template-columns: 126px 1fr auto;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid #edf3fb;
+}
+
+.event-row:first-of-type {
+  border-top: none;
+}
+
+.date-block {
+  color: var(--deep-blue);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.date-block span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.event-title {
+  margin: 0 0 8px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #eef6ff;
+  color: #24527c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.advice {
+  margin: 8px 0 0;
+  color: #51627a;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.risk-badge {
+  align-self: start;
+  min-width: 76px;
+  text-align: center;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.empty-state {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--muted);
+}
+
+@media (max-width: 980px) {
+  .control-band,
+  .dashboard-grid,
+  .summary-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .event-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .risk-badge {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 620px) {
+  .topbar {
+    padding: 18px;
+  }
+
+  .app-shell {
+    width: min(100vw - 24px, 1440px);
+  }
+
+  h1 {
+    font-size: 21px;
+  }
+
+  .timeline-header {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+</style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-mark">T</div>
+      <div>
+        <p class="eyebrow">腾讯校招</p>
+        <h1>目标院校招生活动日历看板</h1>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="scope-note">
+        本看板当前用于本科项目招生活动排期参考；研究生及博士项目的具体日期可能因学院、项目或校区不同而有所变化。
+      </section>
+
+      <section class="control-band" aria-label="查询条件">
+        <label>
+          <span>目标大学</span>
+          <select id="universitySelect"></select>
+        </label>
+        <label>
+          <span>开始日期</span>
+          <input id="startDate" type="date" value="2026-09-01" />
+        </label>
+        <label>
+          <span>结束日期</span>
+          <input id="endDate" type="date" value="2026-12-31" />
+        </label>
+        <label>
+          <span>日期类型</span>
+          <select id="typeSelect">
+            <option value="all">全部类型</option>
+            <option value="start">开学/学期开始</option>
+            <option value="break">假期/Recess</option>
+            <option value="exam">考试/Final</option>
+            <option value="holiday">法定假日</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="dashboard-grid">
+        <aside class="profile-panel">
+          <div class="panel-heading">
+            <p>大学概览</p>
+            <strong id="profileName"></strong>
+            <span class="profile-location" id="profileLocation"></span>
+          </div>
+          <div class="profile-copy" id="profileIntro"></div>
+          <dl class="meta-list">
+            <div>
+              <dt>校历体系</dt>
+              <dd id="profileSystem"></dd>
+            </div>
+            <div>
+              <dt>当前数据</dt>
+              <dd id="profileCount"></dd>
+            </div>
+            <div>
+              <dt>排期用途</dt>
+              <dd>招生活动、宣讲会、校园拜访排期参考</dd>
+            </div>
+          </dl>
+          <div class="source-block">
+            <p>来源链接</p>
+            <div id="sourceLinks"></div>
+          </div>
+        </aside>
+
+        <section class="main-panel">
+          <div class="summary-strip">
+            <div class="summary-card primary">
+              <span>排期判断</span>
+              <strong id="summaryStatus"></strong>
+            </div>
+            <div class="summary-card">
+              <span>相关日期</span>
+              <strong id="summaryTotal"></strong>
+            </div>
+            <div class="summary-card">
+              <span>高风险日期</span>
+              <strong id="summaryRisk"></strong>
+            </div>
+            <div class="summary-card">
+              <span>建议窗口</span>
+              <strong id="summaryWindow"></strong>
+            </div>
+          </div>
+
+          <div class="insight-box" id="insightBox"></div>
+
+          <div class="timeline-header">
+            <div>
+              <p>关键日期时间线</p>
+              <h2 id="rangeTitle"></h2>
+            </div>
+            <div class="legend">
+              <span class="dot medium"></span>谨慎
+              <span class="dot high"></span>避开
+              <span class="dot low"></span>参考
+            </div>
+          </div>
+
+          <div class="timeline" id="timeline"></div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+window.CALENDAR_DATA = {
+  "universities": [
+    {
+      "name": "Duke University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.duke.edu/2026-2027-academic-calendar/"
+      ]
+    },
+    {
+      "name": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.jhu.edu/wp-content/uploads/sites/50/Extended-University-Academic-Calendar.pdf"
+      ]
+    },
+    {
+      "name": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://uwaterloo.ca/important-dates/undergraduate?dates=Any&year=20&term=All&type=All&search=&page=0"
+      ]
+    },
+    {
+      "name": "Princeton University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.princeton.edu/academic-calendar-and-deadlines"
+      ]
+    },
+    {
+      "name": "MIT",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.mit.edu/calendar/current-key-dates"
+      ]
+    },
+    {
+      "name": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://www.cmu.edu/hub/calendar/docs/2627-academic-calendar.xlsx"
+      ]
+    },
+    {
+      "name": "Columbia University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://www.ihn.cuimc.columbia.edu/fall-2026-summer-2027-academic-calendar"
+      ]
+    },
+    {
+      "name": "USC",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://www.usc.edu/academic-calendar/"
+      ]
+    },
+    {
+      "name": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.berkeley.edu/wp-content/uploads/UCB_AcademicCalendar_2026-27_a11y.pdf"
+      ]
+    },
+    {
+      "name": "Cornell University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.cornell.edu/calendars-exams/academic-calendar/2026-2027"
+      ]
+    },
+    {
+      "name": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.gatech.edu/future-academic-calendar"
+      ]
+    },
+    {
+      "name": "Harvard University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://www.gsd.harvard.edu/offices-and-facilities/office-of-the-registrar/academic-calendars-schedules/academic-calendar-2026-27/"
+      ]
+    },
+    {
+      "name": "NYU",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://www.nyu.edu/students/student-information-and-resources/registration-records-and-graduation/academic-calendar.html?semester=Fall%202026"
+      ]
+    },
+    {
+      "name": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://ro.umich.edu/sites/default/files/calendar/pdfs/Cal_2026-2027.pdf"
+      ]
+    },
+    {
+      "name": "UIUC",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://senate.illinois.edu/academic_calendars/2026-2027ac.pdf"
+      ]
+    },
+    {
+      "name": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://almanac.upenn.edu/penn-academic-calendar"
+      ]
+    },
+    {
+      "name": "Northeastern University",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://registrar.northeastern.edu/wp-content/uploads/sites/9/2026-2027-Academic-Calendar.pdf"
+      ]
+    },
+    {
+      "name": "University of Toronto",
+      "calendarSystem": "Semester",
+      "sheet": "University with Semester System",
+      "sourceUrls": [
+        "https://www.artsci.utoronto.ca/current/dates-deadlines/academic-dates#academic-dates-deadlines-accordion-5"
+      ]
+    },
+    {
+      "name": "Stanford University",
+      "calendarSystem": "Quarter",
+      "sheet": "University with Quarter System",
+      "sourceUrls": [
+        "https://studentservices.stanford.edu/calendar-events/academic-calendars/future-academic-calendars/stanford-academic-calendar-2026-2027"
+      ]
+    },
+    {
+      "name": "UCLA",
+      "calendarSystem": "Quarter",
+      "sheet": "University with Quarter System",
+      "sourceUrls": [
+        "https://registrar.ucla.edu/portals/50/documents/calendar/academiccalendar26-27.pdf"
+      ]
+    },
+    {
+      "name": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "sheet": "University with Quarter System",
+      "sourceUrls": [
+        "https://www.registrar.northwestern.edu/calendars/planning-calendars.html"
+      ]
+    },
+    {
+      "name": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "sheet": "University with Quarter System",
+      "sourceUrls": [
+        "https://blink.ucsd.edu/instructors/resources/academic/calendars/2026.html"
+      ]
+    },
+    {
+      "name": "University of Washington",
+      "calendarSystem": "Quarter",
+      "sheet": "University with Quarter System",
+      "sourceUrls": [
+        "https://www.washington.edu/students/reg/2627cal.html"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-24",
+      "end": "2026-08-24",
+      "title": "8.24.2026",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "10.12.2026 to 10.16.2026",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-07",
+      "end": "2026-12-14",
+      "title": "Final examinations: 2026-12-7 – 2026-12-14",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-19",
+      "end": "2027-01-19",
+      "title": "2027.01.19",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-08",
+      "end": "2027-03-12",
+      "title": "2027.03.08 to 2027.03.12",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-03",
+      "end": "2027-05-11",
+      "title": "Final examinations: 2027-05-3 – 2027-05-11",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Carnegie Mellon University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-08",
+      "end": "2026-09-08",
+      "title": "2026.09.08",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-17",
+      "end": "2026-12-23",
+      "title": "2026.12.17 to 12.23",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-15",
+      "end": "2027-03-19",
+      "title": "2027-03-15 – 2027-03-19",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-07",
+      "end": "2027-05-14",
+      "title": "Final exams: 2027-05-07 – 2027-05-14",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Columbia University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-24",
+      "end": "2026-08-24",
+      "title": "8.24.2026",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-10",
+      "end": "2026-10-13",
+      "title": "10.10 to 10.13",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-11",
+      "end": "2026-11-19",
+      "title": "Final exams: 2026-12-11 – 2026-11-19",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-25",
+      "end": "2027-01-25",
+      "title": "Spring term begins: 2027-01-25",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-02-13",
+      "end": "2027-02-16",
+      "title": "February break/no classes: 2027-02-13 – 2027-02-16",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-27",
+      "end": "2027-04-04",
+      "title": "Spring break/no classes: 2027-03-27 – 2027-04-04",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-15",
+      "end": "2027-05-22",
+      "title": "Final exams: 2027-05-15 – 2027-05-22",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Cornell University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-24",
+      "end": "2026-08-24",
+      "title": "Classes begin: 2026-08-24",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-09",
+      "end": "2026-10-14",
+      "title": "Fall break: 2026-10-09 – 2026-10-14",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-24",
+      "end": "2026-11-30",
+      "title": "Thanksgiving recess / graduate reading period begins: 2026-11-24 – 2026-11-30",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-09",
+      "end": "2026-12-14",
+      "title": "Final examinations: 2026-12-09 – 2026-12-14",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-06",
+      "end": "2027-01-06",
+      "title": "Spring semester begins: 2027-01-06",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-05",
+      "end": "2027-03-15",
+      "title": "Spring recess: 2027-03-05 – 2027-03-15",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-04-26",
+      "end": "2027-05-01",
+      "title": "Final examinations: 2027-04-26 – 2027-05-01",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Duke University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-24",
+      "end": "2026-08-24",
+      "title": "First Day of Classes: 2026-08-24",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-05",
+      "end": "2026-10-06",
+      "title": "Fall break: 2026-10-05 – 2026-10-06",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-25",
+      "end": "2026-11-25",
+      "title": "2026-11-25",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-09",
+      "end": "2026-12-16",
+      "title": "Final exams: 2026-12-09 – 2026-12-16",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-11",
+      "end": "2027-01-11",
+      "title": "First Day of Classes: 2027-01-11",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-22",
+      "end": "2027-03-26",
+      "title": "Spring break: 2027-03-22 – 2027-03-26",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-04-29",
+      "end": "2027-05-06",
+      "title": "Final exams: 2027-04-29 – 2027-05-06",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Georgia Tech",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-02",
+      "end": "2026-09-02",
+      "title": "2026.09.02",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-11",
+      "end": "2026-12-16",
+      "title": "Final exams: 2026-12-11 – 2026-12-16",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-15",
+      "end": "2027-01-15",
+      "title": "2027.01.15",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-15",
+      "end": "2027-03-19",
+      "title": "2027.03.15 to 03.19",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-05",
+      "end": "2027-05-10",
+      "title": "Final exams: 2027-05-05 – 2027-05-10",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Harvard University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-31",
+      "end": "2026-08-31",
+      "title": "First day of classes: 2026-08-31",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-22",
+      "end": "2026-10-26",
+      "title": "Fall break: 2026-10-22 – 2026-10-26",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-23",
+      "end": "2026-11-30",
+      "title": "Fall recess: 2026-11-23 – 2026-11-30",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-15",
+      "end": "2026-12-23",
+      "title": "Final exam days: 2026-12-15 – 2026-12-23",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-25",
+      "end": "2027-01-25",
+      "title": "Spring classes begin: 2027-01-25",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-22",
+      "end": "2027-03-29",
+      "title": "Spring break: 2027-03-22 – 2027-03-29",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-10",
+      "end": "2027-05-18",
+      "title": "Final exam days: 2027-05-10 – 2027-05-18",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Johns Hopkins University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-09",
+      "end": "2026-09-09",
+      "title": "first day of classes:  2026-09-09",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-14",
+      "end": "2026-12-18",
+      "title": "Final exams: 2026-12-14 – 2026-12-18",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-02-01",
+      "end": "2027-02-01",
+      "title": "First day of classes: 2027-02-01",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-22",
+      "end": "2027-03-26",
+      "title": "Spring break: 2027-03-22 – 2027-03-26",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-14",
+      "end": "2027-05-19",
+      "title": "Final exams: 2027-05-14 – 2027-05-19",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "MIT",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-02",
+      "end": "2026-09-02",
+      "title": "2026.09.02",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "2026.10.12",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-16",
+      "end": "2026-12-22",
+      "title": "2026-12-16 – 2026-12-22",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-19",
+      "end": "2027-01-19",
+      "title": "2027.01.19",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-15",
+      "end": "2027-03-19",
+      "title": "3.15 to 3.19",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-06",
+      "end": "2027-05-12",
+      "title": "2027-05-06 to 2027-05-12",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "NYU",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-09",
+      "end": "2026-09-09",
+      "title": "2026.09.09",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-25",
+      "end": "2026-11-30",
+      "title": "Fall break begins / classes resume: 2026-11-25 – 2026-11-30",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-14",
+      "end": "2026-12-20",
+      "title": "Fall final exam period: 2026-12-14 – 2026-12-20",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-13",
+      "end": "2027-01-13",
+      "title": "Spring classes begin: 2027-01-13",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-08",
+      "end": "2027-03-15",
+      "title": "2027.03.08 to 2027.03.15",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-04-26",
+      "end": "2027-05-02",
+      "title": "Spring final exam period: 2027-04-26 – 2027-05-02",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northeastern University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-23",
+      "end": "2026-09-23",
+      "title": "Fall classes begin: 2026-09-23",
+      "sourceColumn": "2026 fall quarter 开学时间"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-25",
+      "end": "2026-11-30",
+      "title": "Thanksgiving vacation begins / classes resume: 2026-11-25 – 2026-11-30",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-07",
+      "end": "2026-12-12",
+      "title": "2026-12-07 – 2026-12-12",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "Winter 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-04",
+      "end": "2027-01-04",
+      "title": "2027.01.04",
+      "sourceColumn": "2027 winter quarter 开学时间"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "Winter 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-09",
+      "end": "2027-03-14",
+      "title": "3.9 to 3.14",
+      "sourceColumn": "2027 winter break时间"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-03-15",
+      "end": "2027-03-20",
+      "title": "3.15 to 3.20",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-03-20",
+      "end": "2027-03-20",
+      "title": "2027.03.20",
+      "sourceColumn": "2027 spring quarter"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-06-07",
+      "end": "2027-06-11",
+      "title": "2027.06.07 to 06.11",
+      "sourceColumn": "2027 spring quarter final examination"
+    },
+    {
+      "university": "Northwestern University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-02",
+      "end": "2026-09-02",
+      "title": "Fall Term Classes Begin 2026-09-02",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-17",
+      "end": "2026-10-25",
+      "title": "Fall Recess: 2026-10-17 – 2026-10-25",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-24",
+      "end": "2026-11-29",
+      "title": "Thanksgiving Recess: 2026-11-24 – 2026-11-29",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-16",
+      "end": "2026-12-22",
+      "title": "Fall term final assessments: 2026-12-16 – 2026-12-22",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-25",
+      "end": "2027-01-25",
+      "title": "Spring Term Classes Begin at 8:30 am: 2027-01-25",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-06",
+      "end": "2027-03-14",
+      "title": "Spring Recess: 2027-03-06 – 2027-03-14",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-04-15",
+      "end": "2027-04-29",
+      "title": "Spring Term Final Assessments: 2027-04-15 – 2027-04-29",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Princeton University",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-22",
+      "end": "2026-09-22",
+      "title": "2026.09.22",
+      "sourceColumn": "2026 fall quarter 开学时间"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-07",
+      "end": "2026-12-11",
+      "title": "End-quarter examinations: 2026-12-07 – 2026-12-11",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "Winter 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-04",
+      "end": "2027-01-04",
+      "title": "2027.01.04",
+      "sourceColumn": "2027 winter quarter 开学时间"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-03-15",
+      "end": "2027-03-19",
+      "title": "2027.03.15 to 2027.03.19",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-03-29",
+      "end": "2027-03-29",
+      "title": "2027.03.29",
+      "sourceColumn": "2027 spring quarter"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-06-04",
+      "end": "2027-06-09",
+      "title": "2027.06.04 to 2027.06.09",
+      "sourceColumn": "2027 spring quarter final examination"
+    },
+    {
+      "university": "Stanford University",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-26",
+      "end": "2026-08-26",
+      "title": "Instruction begins: 2026-08-26",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-14",
+      "end": "2026-12-18",
+      "title": "Final examinations: 2026-12-14 – 2026-12-18",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-19",
+      "end": "2027-01-19",
+      "title": "Instruction begins: 2027-01-19",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-22",
+      "end": "2027-03-26",
+      "title": "Spring recess: 2027-03-22 – 2027-03-26",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-10",
+      "end": "2027-05-14",
+      "title": "Final examinations: 2027-05-10 – 2027-05-14",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC Berkeley",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-24",
+      "end": "2026-09-24",
+      "title": "2026-09-24",
+      "sourceColumn": "2026 fall quarter 开学时间"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-05",
+      "end": "2026-12-12",
+      "title": "Final exams: 2026-12-05 – 2026-12-12",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "Winter 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-04",
+      "end": "2027-01-04",
+      "title": "2027-01-04",
+      "sourceColumn": "2027 winter quarter 开学时间"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-03-13",
+      "end": "2027-03-20",
+      "title": "March 13–20",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-03-29",
+      "end": "2027-03-29",
+      "title": "2027.03.29",
+      "sourceColumn": "2027 spring quarter"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-06-05",
+      "end": "2027-06-11",
+      "title": "2027.06.05 to 06.11",
+      "sourceColumn": "2027 spring quarter final examination"
+    },
+    {
+      "university": "UC San Diego",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-24",
+      "end": "2026-09-24",
+      "title": "2026-09-24",
+      "sourceColumn": "2026 fall quarter 开学时间"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-07",
+      "end": "2026-12-11",
+      "title": "Common final exams: 2026-12-07 – 2026-12-11",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "Winter 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-04",
+      "end": "2027-01-04",
+      "title": "2027.01.04",
+      "sourceColumn": "2027 winter quarter 开学时间"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-03-15",
+      "end": "2027-03-19",
+      "title": "2027.03.15 to 03.19",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-03-29",
+      "end": "2027-03-29",
+      "title": "2027.03.29",
+      "sourceColumn": "2027 spring quarter"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-06-07",
+      "end": "2027-06-11",
+      "title": "2027.06.07 to 06.11",
+      "sourceColumn": "2027 spring quarter final examination"
+    },
+    {
+      "university": "UCLA",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-24",
+      "end": "2026-08-24",
+      "title": "Instruction begins: 2026-08-24",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-21",
+      "end": "2026-11-30",
+      "title": "Fall break: 2026-11-21 – 2026-11-30",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-11",
+      "end": "2026-12-17",
+      "title": "Final examinations: 2026-12-11 – 2026-12-17",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-19",
+      "end": "2027-01-19",
+      "title": "Instruction begins: 2027-01-19",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-13",
+      "end": "2027-03-22",
+      "title": "Spring break: 2027-03-13 – 2027-03-22",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-07",
+      "end": "2027-05-13",
+      "title": "Final examinations: 2027-05-07 – 2027-05-13",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "UIUC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-24",
+      "end": "2026-08-24",
+      "title": "Classes begin: 2026-08-24",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-08",
+      "end": "2026-10-09",
+      "title": "Fall recess: 2026-10-08 – 2026-10-09",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-25",
+      "end": "2026-11-29",
+      "title": "Thanksgiving holiday: 2026-11-25 – 2026-11-29",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-09",
+      "end": "2026-12-16",
+      "title": "Exams: 2026-12-09 – 2026-12-16",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-11",
+      "end": "2027-01-11",
+      "title": "Classes begin: 2027-01-11",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-14",
+      "end": "2027-03-21",
+      "title": "Spring recess: 2027-03-14 – 2027-03-21",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-05",
+      "end": "2027-05-12",
+      "title": "Exams: 2027-05-05 – 2027-05-12",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "USC",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-31",
+      "end": "2026-08-31",
+      "title": "Classes begin: 2026-08-31",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-19",
+      "end": "2026-10-20",
+      "title": "Fall study break: 2026-10-19 – 2026-10-20",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-14",
+      "end": "2026-12-21",
+      "title": "Examinations: 2026-12-14 – 2026-12-21",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-13",
+      "end": "2027-01-13",
+      "title": "Classes begin: 2027-01-13",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-06",
+      "end": "2027-03-15",
+      "title": "2027-03-06 – 2027-03-15",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-04-29",
+      "end": "2027-05-06",
+      "title": "Examinations: 2027-04-29 – 2027-05-06",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Michigan Ann Arbor",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-08-25",
+      "end": "2026-08-25",
+      "title": "First day of classes: 2026-08-25",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-11-26",
+      "end": "2026-11-29",
+      "title": "Thanksgiving break: 2026-11-26 – 2026-11-29",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-10",
+      "end": "2026-12-17",
+      "title": "Final examinations: 2026-12-10 – 2026-12-17",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-20",
+      "end": "2027-01-20",
+      "title": "First day of classes: 2027-01-20",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-06",
+      "end": "2027-03-14",
+      "title": "Spring term break: 2027-03-06 – 2027-03-14",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-05-07",
+      "end": "2027-05-17",
+      "title": "Final examinations: 2027-05-07 – 2027-05-17",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Pennsylvania",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labour Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-08",
+      "end": "2026-09-08",
+      "title": "2026.09.08",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-26",
+      "end": "2026-10-30",
+      "title": "2026-10-26 – 2026-10-30",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Remembrance Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-10",
+      "end": "2026-12-22",
+      "title": "Final exam period: 2026-12-10 – 2026-12-22",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-11",
+      "end": "2027-01-11",
+      "title": "2027.01.11",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-02-15",
+      "end": "2027-02-19",
+      "title": "2027-02-15 – 2027-02-19",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-03-26",
+      "end": "2027-03-26",
+      "title": "Good Friday",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-03-29",
+      "end": "2027-03-29",
+      "title": "Easter Monday",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-04-14",
+      "end": "2027-04-29",
+      "title": "Final exam period: 2027-04-14 – 2027-04-29",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "University of Toronto",
+      "calendarSystem": "Semester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-24",
+      "end": "2027-05-24",
+      "title": "Victoria Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labor Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-30",
+      "end": "2026-09-30",
+      "title": "2026.09.30",
+      "sourceColumn": "2026 fall quarter 开学时间"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Columbus Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Veterans Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-26",
+      "end": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-12",
+      "end": "2026-12-18",
+      "title": "2026-12-12 – 2026-12-18",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "Winter 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-04",
+      "end": "2027-01-04",
+      "title": "2027.01.04",
+      "sourceColumn": "2027 winter quarter 开学时间"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-18",
+      "end": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-02-15",
+      "end": "2027-02-15",
+      "title": "Washington's Birthday / Presidents' Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-03-13",
+      "end": "2027-03-19",
+      "title": "03.13 to 03.19",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "Winter 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-03-20",
+      "end": "2027-03-28",
+      "title": "2027-03-20 – 2027-03-28",
+      "sourceColumn": "2027 winter break时间"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-03-29",
+      "end": "2027-03-29",
+      "title": "2027.03.29",
+      "sourceColumn": "2027 spring quarter"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-31",
+      "end": "2027-05-31",
+      "title": "Memorial Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "Spring 2027",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-06-05",
+      "end": "2027-06-11",
+      "title": "2027.06.05 to 06.11",
+      "sourceColumn": "2027 spring quarter final examination"
+    },
+    {
+      "university": "University of Washington",
+      "calendarSystem": "Quarter",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-06-18",
+      "end": "2027-06-18",
+      "title": "Juneteenth National Independence Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-09-07",
+      "end": "2026-09-07",
+      "title": "Labour Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "Fall 2026",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2026-09-09",
+      "end": "2026-09-09",
+      "title": "Classes begin: 2026-09-09",
+      "sourceColumn": "2026 fall 开学时间"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "Fall 2026",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2026-10-10",
+      "end": "2026-10-18",
+      "title": "fall break: 10.10 to 10.18",
+      "sourceColumn": "2026 fall break/recess时间"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-10-12",
+      "end": "2026-10-12",
+      "title": "Thanksgiving Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-11-11",
+      "end": "2026-11-11",
+      "title": "Remembrance Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2026-12-10",
+      "end": "2026-12-22",
+      "title": "Final examination period: 2026-12-10 – 2026-12-22",
+      "sourceColumn": "2026 final exam时间"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "title": "Christmas Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "title": "New Year's Day",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "Spring 2027",
+      "type": "开学/学期开始",
+      "kind": "start",
+      "risk": "中",
+      "status": "谨慎安排",
+      "advice": "开学初期关注度高但事务繁忙，适合轻量曝光或线上说明会。",
+      "start": "2027-01-11",
+      "end": "2027-01-11",
+      "title": "Classes begin: 2027-01-11",
+      "sourceColumn": "2027 spring 开学时间"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "Spring 2027",
+      "type": "假期/Recess",
+      "kind": "break",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "假期/休课期间校园流量不稳定，不建议安排线下活动。",
+      "start": "2027-02-13",
+      "end": "2027-02-21",
+      "title": "2027.02.13 to 2027.02.21",
+      "sourceColumn": "2027 spring break时间"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-03-26",
+      "end": "2027-03-26",
+      "title": "Good Friday",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-03-29",
+      "end": "2027-03-29",
+      "title": "Easter Monday",
+      "sourceColumn": "legal holiday baseline"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "考试/Final",
+      "kind": "exam",
+      "risk": "高",
+      "status": "建议避开",
+      "advice": "考试期间学生可参与度低，建议避开大型招生活动。",
+      "start": "2027-04-15",
+      "end": "2027-04-29",
+      "title": "Final examination period: 2027-04-15 – 2027-04-29",
+      "sourceColumn": "2027 final examination"
+    },
+    {
+      "university": "University of Waterloo",
+      "calendarSystem": "Trimester",
+      "period": "General",
+      "type": "法定假日",
+      "kind": "holiday",
+      "risk": "高",
+      "status": "不建议",
+      "advice": "法定假日可能影响到校和工作人员安排，建议避开。",
+      "start": "2027-05-24",
+      "end": "2027-05-24",
+      "title": "Victoria Day",
+      "sourceColumn": "legal holiday baseline"
+    }
+  ]
+};
+
+    </script>
+    <script>
+const { universities, events } = window.CALENDAR_DATA;
+
+const universitySelect = document.querySelector("#universitySelect");
+const startDate = document.querySelector("#startDate");
+const endDate = document.querySelector("#endDate");
+const typeSelect = document.querySelector("#typeSelect");
+
+const profileName = document.querySelector("#profileName");
+const profileLocation = document.querySelector("#profileLocation");
+const profileIntro = document.querySelector("#profileIntro");
+const profileSystem = document.querySelector("#profileSystem");
+const profileCount = document.querySelector("#profileCount");
+const sourceLinks = document.querySelector("#sourceLinks");
+const summaryStatus = document.querySelector("#summaryStatus");
+const summaryTotal = document.querySelector("#summaryTotal");
+const summaryRisk = document.querySelector("#summaryRisk");
+const summaryWindow = document.querySelector("#summaryWindow");
+const insightBox = document.querySelector("#insightBox");
+const rangeTitle = document.querySelector("#rangeTitle");
+const timeline = document.querySelector("#timeline");
+
+const riskClass = {
+  高: "high",
+  中: "medium",
+  低: "low",
+};
+
+const uniqueUniversities = [...new Map(universities.map((item) => [item.name, item])).values()];
+
+const universityDetails = {
+  "Duke University": {
+    location: "Durham, North Carolina, USA",
+    intro: "Duke University 是位于北卡罗来纳州达勒姆的私立研究型大学，学术声誉强，商科、工程、公共政策和医学相关方向都具有较高关注度，适合作为高质量本科及研究生招生活动目标院校。",
+  },
+  "Johns Hopkins University": {
+    location: "Baltimore, Maryland, USA",
+    intro: "Johns Hopkins University 位于马里兰州巴尔的摩，以研究实力、医学、公共卫生、国际关系和工程方向见长，适合安排偏学术型、专业导向较强的招生说明会。",
+  },
+  "University of Waterloo": {
+    location: "Waterloo, Ontario, Canada",
+    intro: "University of Waterloo 位于加拿大安大略省滑铁卢，以工程、计算机、数学和 Co-op 项目闻名，适合重点关注科技、工程和职业发展主题的招生活动。",
+  },
+  "Princeton University": {
+    location: "Princeton, New Jersey, USA",
+    intro: "Princeton University 位于新泽西州普林斯顿，是美国顶尖私立研究型大学之一，本科教育和基础学科实力突出，适合高端品牌曝光与精细化招生沟通。",
+  },
+  MIT: {
+    location: "Cambridge, Massachusetts, USA",
+    intro: "MIT 位于马萨诸塞州剑桥，在工程、计算机、科学和创新创业方向影响力极强，适合科技导向、研究导向和高潜学生群体的招生活动。",
+  },
+  "Carnegie Mellon University": {
+    location: "Pittsburgh, Pennsylvania, USA",
+    intro: "Carnegie Mellon University 位于宾夕法尼亚州匹兹堡，以计算机、人工智能、工程、设计和商科分析方向突出，适合技术和跨学科项目推广。",
+  },
+  "Columbia University": {
+    location: "New York, New York, USA",
+    intro: "Columbia University 位于纽约市，是常春藤盟校之一，地理位置和综合学术资源优势明显，适合安排城市校友资源、职业发展和项目介绍结合的招生活动。",
+  },
+  USC: {
+    location: "Los Angeles, California, USA",
+    intro: "USC 位于加州洛杉矶，传媒、商科、工程、电影和国际学生群体资源丰富，适合举办综合型宣讲会及面向国际学生的招生活动。",
+  },
+  "UC Berkeley": {
+    location: "Berkeley, California, USA",
+    intro: "UC Berkeley 位于旧金山湾区伯克利，是加州大学系统旗舰校之一，工程、计算机、商科、社会科学等方向影响力强，适合科技和创新主题活动。",
+  },
+  "Cornell University": {
+    location: "Ithaca, New York, USA",
+    intro: "Cornell University 位于纽约州伊萨卡，是常春藤盟校之一，工程、酒店管理、农业生命科学和商科等方向覆盖广，适合多项目联合推广。",
+  },
+  "Georgia Tech": {
+    location: "Atlanta, Georgia, USA",
+    intro: "Georgia Tech 位于佐治亚州亚特兰大，以工程、计算机和技术应用方向著称，学生群体与 STEM 招生主题高度匹配。",
+  },
+  "Harvard University": {
+    location: "Cambridge, Massachusetts, USA",
+    intro: "Harvard University 位于马萨诸塞州剑桥，是全球知名综合性研究型大学，适合面向高端目标学生、研究生项目和品牌影响力建设的活动。",
+  },
+  NYU: {
+    location: "New York, New York, USA",
+    intro: "NYU 位于纽约市，商科、艺术、传媒、社会科学和国际化资源突出，适合安排城市职业发展、跨文化项目和申请答疑类活动。",
+  },
+  "University of Michigan Ann Arbor": {
+    location: "Ann Arbor, Michigan, USA",
+    intro: "University of Michigan Ann Arbor 位于密歇根州安娜堡，是大型公立研究型大学，工程、商科、公共政策和社会科学资源强，适合大规模校园活动。",
+  },
+  UIUC: {
+    location: "Champaign, Illinois, USA",
+    intro: "UIUC 位于伊利诺伊州香槟，以工程、计算机、信息科学和商科方向见长，适合 STEM 和就业导向主题的招生活动。",
+  },
+  "University of Pennsylvania": {
+    location: "Philadelphia, Pennsylvania, USA",
+    intro: "University of Pennsylvania 位于宾夕法尼亚州费城，是常春藤盟校之一，商科、护理、工程和社会科学资源突出，适合高端项目推广与专业咨询。",
+  },
+  "Northeastern University": {
+    location: "Boston, Massachusetts, USA",
+    intro: "Northeastern University 位于马萨诸塞州波士顿，以 Co-op、职业导向教育、工程、商科和计算机方向受到关注，适合职业发展主题招生沟通。",
+  },
+  "University of Toronto": {
+    location: "Toronto, Ontario, Canada",
+    intro: "University of Toronto 位于加拿大安大略省多伦多，是加拿大规模和声誉突出的研究型大学，学科覆盖广，国际学生群体大，适合综合型招生宣讲和项目说明活动。",
+  },
+  "Stanford University": {
+    location: "Stanford, California, USA",
+    intro: "Stanford University 位于加州硅谷核心区域，工程、计算机、商科、创业和跨学科创新资源突出，适合高端科技和创新主题招生活动。",
+  },
+  UCLA: {
+    location: "Los Angeles, California, USA",
+    intro: "UCLA 位于加州洛杉矶，是加州大学系统重要校区，综合学术实力和学生规模突出，适合大规模品牌曝光和多专业招生活动。",
+  },
+  "Northwestern University": {
+    location: "Evanston, Illinois, USA",
+    intro: "Northwestern University 位于伊利诺伊州埃文斯顿，临近芝加哥，传媒、商科、工程和社会科学资源强，适合专业化说明会和校友资源联动活动。",
+  },
+  "UC San Diego": {
+    location: "La Jolla, California, USA",
+    intro: "UC San Diego 位于加州拉霍亚，生物科学、工程、计算机和海洋科学等方向突出，适合 STEM、科研和加州学生群体相关活动。",
+  },
+  "University of Washington": {
+    location: "Seattle, Washington, USA",
+    intro: "University of Washington 位于华盛顿州西雅图，计算机、工程、生命科学和公共卫生等方向实力强，适合结合科技产业资源的招生活动。",
+  },
+};
+
+function formatDate(dateString) {
+  const date = new Date(`${dateString}T00:00:00`);
+  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+}
+
+function formatShort(dateString) {
+  const date = new Date(`${dateString}T00:00:00`);
+  return `${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+function formatRange(event) {
+  if (event.start === event.end) {
+    return formatDate(event.start);
+  }
+  return `${formatDate(event.start)} 至 ${formatDate(event.end)}`;
+}
+
+function addDays(dateString, days) {
+  const date = new Date(`${dateString}T00:00:00`);
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function diffDays(start, end) {
+  const startDateValue = new Date(`${start}T00:00:00`);
+  const endDateValue = new Date(`${end}T00:00:00`);
+  return Math.round((endDateValue - startDateValue) / 86400000) + 1;
+}
+
+function maxDate(a, b) {
+  return a > b ? a : b;
+}
+
+function minDate(a, b) {
+  return a < b ? a : b;
+}
+
+function formatAvailableRange(window) {
+  if (window.start === window.end) return formatDate(window.start);
+  return `${formatDate(window.start)} - ${formatDate(window.end)}`;
+}
+
+function renderAvailableWindows(windows) {
+  if (!windows.length) return "暂无可用日期";
+  return windows.map((window) => `<span>${formatAvailableRange(window)}</span>`).join("");
+}
+
+function monthKey(event) {
+  const date = new Date(`${event.start}T00:00:00`);
+  return `${date.getFullYear()}年${date.getMonth() + 1}月`;
+}
+
+function overlaps(event, start, end) {
+  return event.start <= end && event.end >= start;
+}
+
+function getFilteredEvents() {
+  const selectedUniversity = universitySelect.value;
+  const selectedType = typeSelect.value;
+  return events
+    .filter((event) => event.university === selectedUniversity)
+    .filter((event) => overlaps(event, startDate.value, endDate.value))
+    .filter((event) => selectedType === "all" || event.kind === selectedType)
+    .sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end));
+}
+
+function getPlanningEvents() {
+  const selectedUniversity = universitySelect.value;
+  return events
+    .filter((event) => event.university === selectedUniversity)
+    .filter((event) => overlaps(event, startDate.value, endDate.value))
+    .sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end));
+}
+
+function getProfile() {
+  return uniqueUniversities.find((item) => item.name === universitySelect.value);
+}
+
+function findAvailableWindows(planningEvents) {
+  const start = startDate.value;
+  const end = endDate.value;
+  const blocked = planningEvents
+    .map((event) => ({
+      start: maxDate(event.start, start),
+      end: minDate(event.end, end),
+    }))
+    .sort((a, b) => a.start.localeCompare(b.start));
+
+  const merged = [];
+  blocked.forEach((period) => {
+    if (!merged.length || addDays(merged[merged.length - 1].end, 1) < period.start) {
+      merged.push({ ...period });
+    } else if (period.end > merged[merged.length - 1].end) {
+      merged[merged.length - 1].end = period.end;
+    }
+  });
+
+  let cursor = start;
+  const candidates = [];
+  merged.forEach((period) => {
+    const candidateEnd = addDays(period.start, -1);
+    if (cursor <= candidateEnd) {
+      candidates.push({ start: cursor, end: candidateEnd, days: diffDays(cursor, candidateEnd) });
+    }
+    cursor = addDays(period.end, 1);
+  });
+
+  if (cursor <= end) {
+    candidates.push({ start: cursor, end, days: diffDays(cursor, end) });
+  }
+
+  return candidates;
+}
+
+function decideStatus(planningEvents, availableWindows) {
+  const highCount = planningEvents.filter((event) => event.risk === "高").length;
+  const mediumCount = planningEvents.filter((event) => event.risk === "中").length;
+  const windowSummary = availableWindows.length
+    ? `共 ${availableWindows.length} 段可用日期`
+    : "暂无可用日期";
+  const firstWindow = availableWindows[0] ? formatAvailableRange(availableWindows[0]) : "";
+
+  if (!planningEvents.length) {
+    return {
+      label: "暂无冲突",
+      text: `所选时间段内没有匹配的关键日期，${windowSummary}。仍建议结合当地校方安排和团队资源确认。`,
+    };
+  }
+
+  if (highCount >= 3) {
+    return {
+      label: "不建议安排",
+      text: availableWindows.length
+        ? `所选周期内有 ${highCount} 个高风险日期或区间。若必须安排，可先从 ${firstWindow} 等可用日期中评估，并避开时间线中的考试、假期和法定假日。`
+        : `所选周期内有 ${highCount} 个高风险日期或区间，暂未找到清晰空档。建议更换时间范围。`,
+    };
+  }
+
+  if (highCount > 0 || mediumCount >= 2) {
+    return {
+      label: "谨慎安排",
+      text: availableWindows.length
+        ? `所选周期内存在 ${highCount} 个高风险项、${mediumCount} 个中风险项。可用日期已列出，建议优先从 ${firstWindow} 开始评估，活动形式可偏向线上宣讲、申请答疑或短时段校园拜访。`
+        : `所选周期内存在 ${highCount} 个高风险项、${mediumCount} 个中风险项，暂未找到清晰空档。建议缩小活动规模或更换日期。`,
+    };
+  }
+
+  return {
+    label: "推荐关注",
+    text: `所选周期内风险较低，${windowSummary}。下一步可确认目标专业学生课表和校园场地可用性。`,
+  };
+}
+
+function renderProfile(profile) {
+  const allUniversityEvents = events.filter((event) => event.university === profile.name);
+  const detail = universityDetails[profile.name] || {
+    location: "Location to be confirmed",
+    intro: `${profile.name} 已纳入目标院校日历库。本看板将校历日期转化为排期参考，帮助团队判断宣讲会、校园拜访和招生活动是否可能与开学、考试、假期或法定假日冲突。`,
+  };
+  profileName.textContent = profile.name;
+  profileLocation.textContent = detail.location;
+  profileSystem.textContent = profile.calendarSystem || "未标注";
+  profileCount.textContent = `${allUniversityEvents.length} 条关键日期`;
+  profileIntro.textContent = detail.intro;
+
+  sourceLinks.innerHTML = "";
+  if (!profile.sourceUrls.length) {
+    sourceLinks.textContent = "暂无来源链接";
+    return;
+  }
+
+  profile.sourceUrls.forEach((url, index) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.textContent = `来源 ${index + 1}`;
+    sourceLinks.appendChild(link);
+  });
+}
+
+function renderSummary(filteredEvents, planningEvents) {
+  const availableWindows = findAvailableWindows(planningEvents);
+  const decision = decideStatus(planningEvents, availableWindows);
+  const highCount = planningEvents.filter((event) => event.risk === "高").length;
+
+  summaryStatus.textContent = decision.label;
+  summaryTotal.textContent = `${filteredEvents.length} 条`;
+  summaryRisk.textContent = `${highCount} 条`;
+  summaryWindow.innerHTML = renderAvailableWindows(availableWindows);
+  insightBox.textContent = decision.text;
+  rangeTitle.textContent = `${formatDate(startDate.value)} - ${formatDate(endDate.value)}`;
+}
+
+function createEventRow(event) {
+  const row = document.createElement("article");
+  row.className = "event-row";
+
+  const dateBlock = document.createElement("div");
+  dateBlock.className = "date-block";
+  dateBlock.innerHTML = event.start === event.end
+    ? `${formatShort(event.start)}<span>单日</span>`
+    : `${formatShort(event.start)} - ${formatShort(event.end)}<span>日期区间</span>`;
+
+  const body = document.createElement("div");
+  const title = document.createElement("p");
+  title.className = "event-title";
+  title.textContent = event.title;
+
+  const meta = document.createElement("div");
+  meta.className = "event-meta";
+  [event.type, event.period, event.status].forEach((text) => {
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.textContent = text;
+    meta.appendChild(chip);
+  });
+
+  const advice = document.createElement("p");
+  advice.className = "advice";
+  advice.textContent = `${formatRange(event)}｜${event.advice}`;
+
+  body.append(title, meta, advice);
+
+  const risk = document.createElement("div");
+  risk.className = `risk-badge ${riskClass[event.risk]}`;
+  risk.textContent = `${event.risk}风险`;
+
+  row.append(dateBlock, body, risk);
+  return row;
+}
+
+function renderTimeline(filteredEvents) {
+  timeline.innerHTML = "";
+
+  if (!filteredEvents.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.textContent = "该条件下暂无匹配日期。可以调整时间范围或日期类型。";
+    timeline.appendChild(empty);
+    return;
+  }
+
+  const groups = new Map();
+  filteredEvents.forEach((event) => {
+    const key = monthKey(event);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(event);
+  });
+
+  groups.forEach((groupEvents, key) => {
+    const group = document.createElement("section");
+    group.className = "month-group";
+
+    const label = document.createElement("h3");
+    label.className = "month-label";
+    label.textContent = key;
+    group.appendChild(label);
+
+    groupEvents.forEach((event) => group.appendChild(createEventRow(event)));
+    timeline.appendChild(group);
+  });
+}
+
+function render() {
+  const profile = getProfile();
+  const filteredEvents = getFilteredEvents();
+  const planningEvents = getPlanningEvents();
+  renderProfile(profile);
+  renderSummary(filteredEvents, planningEvents);
+  renderTimeline(filteredEvents);
+}
+
+function init() {
+  uniqueUniversities.forEach((university) => {
+    const option = document.createElement("option");
+    option.value = university.name;
+    option.textContent = university.name;
+    universitySelect.appendChild(option);
+  });
+
+  universitySelect.value = "University of Toronto";
+  [universitySelect, startDate, endDate, typeSelect].forEach((control) => {
+    control.addEventListener("change", render);
+  });
+  render();
+}
+
+init();
+
+    </script>
+  </body>
+</html>
