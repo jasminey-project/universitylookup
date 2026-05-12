@@ -210,7 +210,7 @@ dd {
 
 .summary-strip {
   display: grid;
-  grid-template-columns: minmax(150px, 0.9fr) minmax(120px, 0.7fr) minmax(120px, 0.7fr) minmax(340px, 1.8fr);
+  grid-template-columns: minmax(120px, 0.7fr) minmax(120px, 0.7fr) minmax(340px, 1.8fr);
   gap: 12px;
 }
 
@@ -220,12 +220,6 @@ dd {
   border: 1px solid #dfeafa;
   border-radius: 8px;
   background: #fbfdff;
-}
-
-.summary-card.primary {
-  color: white;
-  background: var(--deep-blue);
-  border-color: var(--deep-blue);
 }
 
 .summary-card span {
@@ -506,10 +500,6 @@ dd {
 
         <section class="main-panel">
           <div class="summary-strip">
-            <div class="summary-card primary">
-              <span>排期判断</span>
-              <strong id="summaryStatus"></strong>
-            </div>
             <div class="summary-card">
               <span>相关日期</span>
               <strong id="summaryTotal"></strong>
@@ -5902,7 +5892,6 @@ const profileIntro = document.querySelector("#profileIntro");
 const profileSystem = document.querySelector("#profileSystem");
 const profileCount = document.querySelector("#profileCount");
 const sourceLinks = document.querySelector("#sourceLinks");
-const summaryStatus = document.querySelector("#summaryStatus");
 const summaryTotal = document.querySelector("#summaryTotal");
 const summaryRisk = document.querySelector("#summaryRisk");
 const summaryWindow = document.querySelector("#summaryWindow");
@@ -6199,7 +6188,6 @@ function renderSummary(filteredEvents, planningEvents) {
   const decision = decideStatus(planningEvents, availableWindows);
   const highCount = planningEvents.filter((event) => event.risk === "高").length;
 
-  summaryStatus.textContent = decision.label;
   summaryTotal.textContent = `${filteredEvents.length} 条`;
   summaryRisk.textContent = `${highCount} 条`;
   summaryWindow.innerHTML = renderAvailableWindows(availableWindows);
